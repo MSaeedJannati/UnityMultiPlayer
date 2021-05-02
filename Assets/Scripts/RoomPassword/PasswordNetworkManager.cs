@@ -70,7 +70,7 @@ namespace NetworkRoomPassword
 
             bool aproveConnection = password == passwrodInputField.text;
 
-          
+
             Vector3 spawnPos=Vector3.zero;
             Quaternion spanwRot=Quaternion.identity;
             switch (NetworkManager.Singleton.ConnectedClients.Count)
