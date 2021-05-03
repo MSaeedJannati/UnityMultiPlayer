@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/RoomWithPassWord/RpcSample.unity
-    guid: 8dc335b0a9259254f8a5af43a7841b8c
+    path: Assets/Scenes/SyncVarSample.unity
+    guid: 3033cf858ed9fb14fb142209176e2670
   m_configObjects: {}
