@@ -13,6 +13,7 @@ public class ConnectionManager : NetworkBehaviour
     #region Variables
     [SerializeField] GameObject connectionUI;
     [SerializeField] GameObject LeaveButton;
+    [SerializeField] GameObject mainCamera;
     public string iPAddress="127.0.0.1";
 
     UNetTransport transport;
@@ -20,6 +21,7 @@ public class ConnectionManager : NetworkBehaviour
     #region Monobehaviour callbacks
     private void Start()
     {
+        mainCamera = Camera.main.gameObject;
         NetworkManager.Singleton.OnServerStarted += serverStarted;
         NetworkManager.Singleton.OnClientConnectedCallback += clientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += clientDisconected;
@@ -40,6 +42,7 @@ public class ConnectionManager : NetworkBehaviour
         NetworkManager.Singleton.ConnectionApprovalCallback += ApprovalCheck;
         NetworkManager.Singleton.StartHost(GetRandomSpawnPos(), Quaternion.identity);
         connectionUI.SetActive(false);
+        mainCamera.SetActive(false);
     }
 
     public void Leave()
@@ -53,8 +56,11 @@ public class ConnectionManager : NetworkBehaviour
         {
             NetworkManager.Singleton.StopClient();
         }
-        LeaveButton.SetActive(false);
-        connectionUI.SetActive(true);
+        //LeaveButton.SetActive(false);
+        //connectionUI.SetActive(true);
+        //mainCamera.SetActive(true);
+        //GameManager.instance.CanvasHpUiElements.backGoundObj.SetActive(false);
+        switchUi(false);
     }
 
     public void Join()
@@ -75,8 +81,10 @@ public class ConnectionManager : NetworkBehaviour
     {
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            connectionUI.SetActive(true);
-            LeaveButton.SetActive(false);
+            //connectionUI.SetActive(true);
+            //mainCamera.SetActive(true);
+            //LeaveButton.SetActive(false);
+            switchUi(false);
         }
     }
 
@@ -84,8 +92,10 @@ public class ConnectionManager : NetworkBehaviour
     {
         if (clientId == NetworkManager.Singleton.LocalClientId)
         {
-            connectionUI.SetActive(false);
-            LeaveButton.SetActive(true);
+            //connectionUI.SetActive(false);
+            //mainCamera.SetActive(false);
+            //LeaveButton.SetActive(true);
+            switchUi(true);
         }
     }
 
@@ -99,15 +109,22 @@ public class ConnectionManager : NetworkBehaviour
 
     Vector3 GetRandomSpawnPos()
     {
-        return new Vector3(getRandomNumInRange(), getRandomNumInRange(), getRandomNumInRange());
+        return new Vector3(getRandomNumInRange(), 2, getRandomNumInRange());
     }
     float getRandomNumInRange()
     {
-        return Random.Range(-10.0f, 10.0f);
+        return Random.Range(-5.0f, 5.0f);
     }
     public void IpAdderssChanged(string newAddress)
     {
         iPAddress = newAddress;
+    }
+    public void switchUi(bool isPlayerSpawning)
+    {
+        LeaveButton.SetActive(isPlayerSpawning);
+        connectionUI.SetActive(!isPlayerSpawning);
+        mainCamera.SetActive(!isPlayerSpawning);
+        GameManager.instance.CanvasHpUiElements.backGoundObj.SetActive(isPlayerSpawning);
     }
     #endregion
 }
